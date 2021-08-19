@@ -9,6 +9,22 @@ public class Board {
     String content;
     Timestamp date;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
     public Board(String userId, String title, String content, Timestamp date) {
         this.userId = userId;
         this.title = title;
