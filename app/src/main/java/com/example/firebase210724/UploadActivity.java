@@ -6,26 +6,29 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebase210724.domain.Board;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.firebase210724.util.FirebaseDatabaseHandler;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class UploadActivity extends AppCompatActivity {
 
     EditText editTitle;
     EditText editUser;
     EditText editContent;
-    DatabaseReference db;
+    FirebaseDatabaseHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        db = FirebaseDatabase.getInstance().getReference();
-
         editTitle = findViewById(R.id.edit_upload_title);
         editUser = findViewById(R.id.edit_upload_user);
         editContent = findViewById(R.id.edit_upload_content);
+
+        handler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
     }
 
     private Board createBoard() {
@@ -36,7 +39,8 @@ public class UploadActivity extends AppCompatActivity {
         return new Board(user, content, title);
     }
 
-    private void upload(Board board) {
-
+    public void postBoard(String title, String content, String userId) {
+        handler.post(getApplicationContext(), title, content, userId);
     }
+
 }
