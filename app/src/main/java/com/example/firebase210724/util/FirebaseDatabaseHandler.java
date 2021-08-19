@@ -3,13 +3,18 @@ package com.example.firebase210724.util;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.firebase210724.domain.Board;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FirebaseDatabaseHandler {
 
@@ -49,8 +54,23 @@ public class FirebaseDatabaseHandler {
         });
     }
 
-    private int getLastIndex() {
-        return Integer.parseInt(db.collection(COLLECTION_BOARD).document().getId());
+    public List<Board> getBoardList(Context context) {
+        List<Board> boardList = new ArrayList<>();
+
+        db.collection("boards").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String userId = Objects.requireNonNull(document.getData().get("userId")).toString();
+                    String title = Objects.requireNonNull(document.getData().get("title")).toString();
+                    String content = Objects.requireNonNull(document.getData().get("content")).toString();
+                    Timestamp date = (Timestamp) document.getData().get("date");
+
+                    boardList.add(new Board(userId, title, content, date));
+                }
+            }
+        }).addOnFailureListener(e -> Toast.makeText(context, "게시판 조회 실패 : " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return boardList;
     }
 
 }
