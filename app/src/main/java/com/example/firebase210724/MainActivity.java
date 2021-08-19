@@ -8,18 +8,15 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonStorage;
-    Button buttonDatabase;
+    Button btnBoard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonStorage = findViewById(R.id.btn_storage);
-        buttonDatabase = findViewById(R.id.btn_database);
+        btnBoard = findViewById(R.id.btn_board);
 
-        buttonStorage.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), StorageActivity.class)));
-        buttonDatabase.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), RealtimeDBActivity.class)));
+        btnBoard.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), BoardActivity.class)));
     }
 }
