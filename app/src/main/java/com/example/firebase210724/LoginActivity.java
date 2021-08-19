@@ -17,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editId;
     EditText editPassword;
     Button btnLogin;
+    Button btnSignup;
     private FirebaseAuth auth;
 
     @Override
@@ -27,12 +28,15 @@ public class LoginActivity extends AppCompatActivity {
         editId = findViewById(R.id.edit_login_id);
         editPassword = findViewById(R.id.edit_login_password);
         btnLogin = findViewById(R.id.btn_login);
+        btnSignup = findViewById(R.id.btn_signup);
 
         auth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(view -> {
-            signIn(editId.getText().toString(), editPassword.getText().toString());
+            signIn(editId.getText().toString().trim(), editPassword.getText().toString().trim());
         });
+
+        btnSignup.setOnClickListener(view -> startActivity(new Intent(this, RegisterActivity.class)));
     }
 
     private void signIn(String email, String password) {
