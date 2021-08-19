@@ -3,11 +3,12 @@ package com.example.firebase210724.util;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.firebase210724.adapter.BoardAdapter;
 import com.example.firebase210724.domain.Board;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,23 +55,22 @@ public class FirebaseDatabaseHandler {
         });
     }
 
-    public List<Board> getBoardList(Context context) {
+    public void setBoardList(Context context, BoardAdapter boardAdapter) {
         List<Board> boardList = new ArrayList<>();
 
-        db.collection("boards").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    String userId = Objects.requireNonNull(document.getData().get("userId")).toString();
-                    String title = Objects.requireNonNull(document.getData().get("title")).toString();
-                    String content = Objects.requireNonNull(document.getData().get("content")).toString();
-                    Timestamp date = (Timestamp) document.getData().get("date");
-
-                    boardList.add(new Board(userId, title, content, date));
-                }
+        db.collection("boards").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                String userId = Objects.requireNonNull(document.getData().get("userId")).toString();
+                String title = Objects.requireNonNull(document.getData().get("title")).toString();
+                String content = Objects.requireNonNull(document.getData().get("content")).toString();
+                Timestamp date = (Timestamp) document.getData().get("date");
+                boardList.add(new Board(userId, title, content, date));
             }
+        }).addOnCompleteListener(task -> {
+            boardAdapter.addBoards(boardList);
+            boardAdapter.notifyDataSetChanged();
         }).addOnFailureListener(e -> Toast.makeText(context, "게시판 조회 실패 : " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
-        return boardList;
     }
 
 }
