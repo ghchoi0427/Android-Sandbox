@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     Button btnSignup;
     private FirebaseAuth auth;
+    private final String EMAIL_SUFFIX = "@gmail.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +40,18 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(view -> startActivity(new Intent(this, RegisterActivity.class)));
     }
 
-    private void signIn(String email, String password) {
+    private void signIn(String name, String password) {
         try {
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            auth.signInWithEmailAndPassword(name + EMAIL_SUFFIX, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "로그인 되었습니다", Toast.LENGTH_SHORT).show();
                     FirebaseDatabaseHandler firebaseHandler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
-                    firebaseHandler.addUser(getApplicationContext(), getUserNameFromEmail(email), auth.getUid());
+                    firebaseHandler.addUser(getApplicationContext(), name, auth.getUid());
                     startActivity(new Intent(this, MainActivity.class));
                 }
             }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "로그인 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private String getUserNameFromEmail(String email) {
-        email.split("@");
-        return email.split("@")[0];
     }
 }

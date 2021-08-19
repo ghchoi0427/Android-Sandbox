@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth auth;
@@ -17,6 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText editRegisterId;
     EditText editRegisterPassword;
     Button btnRegisterAccount;
+    private final String EMAIL_SUFFIX = "@gmail.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,9 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegisterAccount.setOnClickListener(v -> createAccount(editRegisterId.getText().toString().trim(), editRegisterPassword.getText().toString().trim()));
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String name, String password) {
         try {
-            auth.createUserWithEmailAndPassword(email, password)
+            auth.createUserWithEmailAndPassword(name + EMAIL_SUFFIX, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Register succeed", Toast.LENGTH_SHORT).show();
