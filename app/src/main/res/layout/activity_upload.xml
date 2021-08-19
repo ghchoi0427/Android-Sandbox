@@ -14,16 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Title" />
+            android:hint="Title"
+            android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/edit_upload_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="User" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,15 +32,15 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Content" />
+            android:hint="Content" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_upload_post"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="-25dp"
             android:layout_weight="10"
-            android:text="Button" />
+            android:text="업로드" />
 
     </LinearLayout>
 </LinearLayout>
