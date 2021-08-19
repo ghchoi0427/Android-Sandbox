@@ -8,8 +8,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.firebase210724.util.FirebaseDatabaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -17,7 +18,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText editPassword;
     Button btnLogin;
     private FirebaseAuth auth;
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +39,9 @@ public class LoginActivity extends AppCompatActivity {
         try {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
-                    FirebaseUser user = auth.getCurrentUser();
-                    updateUser(user);
                     Toast.makeText(getApplicationContext(), "로그인 되었습니다", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabaseHandler firebaseHandler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
+                    firebaseHandler.addUser(getApplicationContext(), getUserNameFromEmail(email), auth.getUid());
                     startActivity(new Intent(this, MainActivity.class));
                 }
             }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "로그인 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -50,7 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUser(FirebaseUser currentUser) {
-        this.currentUser = currentUser;
+    private String getUserNameFromEmail(String email) {
+        email.split("@");
+        return email.split("@")[0];
     }
 }
