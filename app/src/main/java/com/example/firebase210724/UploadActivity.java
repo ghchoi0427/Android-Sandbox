@@ -1,22 +1,21 @@
 package com.example.firebase210724;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.firebase210724.domain.Board;
 import com.example.firebase210724.util.FirebaseDatabaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Objects;
-
 public class UploadActivity extends AppCompatActivity {
 
     EditText editTitle;
-    EditText editUser;
     EditText editContent;
+    Button btnUpload;
     FirebaseDatabaseHandler handler;
 
     @Override
@@ -25,18 +24,16 @@ public class UploadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload);
 
         editTitle = findViewById(R.id.edit_upload_title);
-        editUser = findViewById(R.id.edit_upload_user);
         editContent = findViewById(R.id.edit_upload_content);
+        btnUpload = findViewById(R.id.btn_upload_post);
 
         handler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
-    }
 
-    private Board createBoard() {
-        String title = editTitle.getText().toString();
-        String user = editUser.getText().toString();
-        String content = editContent.getText().toString();
+        btnUpload.setOnClickListener(view -> {
+            postBoard(editTitle.getText().toString(), editContent.getText().toString(), FirebaseAuth.getInstance().getUid());
+            startActivity(new Intent(this, BoardActivity.class));
+        });
 
-        return new Board(user, content, title);
     }
 
     public void postBoard(String title, String content, String userId) {
