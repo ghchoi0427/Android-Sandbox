@@ -1,6 +1,5 @@
 package com.example.firebase210724.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,12 @@ import java.util.List;
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
 
     List<Board> boardList = new ArrayList<>();
+    RecyclerView recyclerBoard;
+    private ViewHolder.OnBoardListener mOnBoardListener;
+
+    public BoardAdapter(ViewHolder.OnBoardListener onBoardListener) {
+        mOnBoardListener = onBoardListener;
+    }
 
     public List<Board> getBoardList() {
         return boardList;
@@ -33,7 +38,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.item_board, viewGroup, false);
 
-        return new ViewHolder(itemView);
+
+        return new ViewHolder(itemView, mOnBoardListener);
     }
 
     @Override
@@ -53,23 +59,23 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     public void addBoards(List<Board> boardList) {
         this.boardList.addAll(boardList);
-        Log.d("tester", "addboards" + this.boardList.size());
     }
 
     public void clearItem() {
         boardList.clear();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView title;
+        OnBoardListener onBoardListener;
 
-        public ViewHolder(View boardView) {
+        public ViewHolder(View boardView, OnBoardListener onBoardListener) {
             super(boardView);
             title = boardView.findViewById(R.id.txt_board_title);
+            this.onBoardListener = onBoardListener;
 
-            boardView.setOnClickListener(view -> {
-                //boardView.getContext().startActivity(new Intent(boardView.getContext(), BoardActivity.class));
-            });
+            boardView.setOnClickListener(this);
+
         }
 
         public void setItem(Board board) {
@@ -78,6 +84,15 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public void onClick(View view) {
+            onBoardListener.onBoardClick(getAdapterPosition());
+        }
+
+        public interface OnBoardListener {
+            void onBoardClick(int position);
         }
     }
 }
