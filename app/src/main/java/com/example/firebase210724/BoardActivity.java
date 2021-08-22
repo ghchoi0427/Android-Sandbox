@@ -78,8 +78,9 @@ public class BoardActivity extends AppCompatActivity implements BoardAdapter.Vie
         txtViewBoardContent = findViewById(R.id.txt_view_board_content);
 
         Board board = boardAdapter.getBoardList().get(position);
+
+        handler.getUserNameById(board.getUserId(), txtViewBoardUser);
         txtViewBoardTitle.setText(board.getTitle());
-        txtViewBoardUser.setText(board.getUserId());
         txtViewBoardContent.setText(board.getContent());
     }
 }
