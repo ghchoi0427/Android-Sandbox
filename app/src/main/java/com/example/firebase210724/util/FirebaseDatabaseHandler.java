@@ -1,12 +1,12 @@
 package com.example.firebase210724.util;
 
 import android.content.Context;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firebase210724.adapter.BoardAdapter;
 import com.example.firebase210724.domain.Board;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -40,15 +40,13 @@ public class FirebaseDatabaseHandler {
 
     public void post(Context context, String title, String content, String userId) {
         Map<String, Object> board = new HashMap<>();
-        DocumentReference documentReference = db.collection(COLLECTION_BOARD).document();
 
         board.put("content", content);
         board.put("title", title);
         board.put("date", new Timestamp(new Date()));
         board.put("userId", userId);
-        board.put("key", documentReference.getId());
 
-        documentReference.set(board)
+        db.collection(COLLECTION_BOARD).document().set(board)
                 .addOnSuccessListener(unused -> Toast.makeText(context, "성공적으로 게시되었습니다.", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show());
     }
@@ -69,6 +67,21 @@ public class FirebaseDatabaseHandler {
             boardAdapter.notifyDataSetChanged();
         }).addOnFailureListener(e -> Toast.makeText(context, "게시판 조회 실패 : " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
+    }
+
+    public void getUserNameById(String id, TextView textView) {
+
+        db.collection(COLLECTION_USER).document(id).get()
+                .addOnFailureListener(e -> {
+                    Toast.makeText(textView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                })
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        textView.setText(Objects.requireNonNull(documentSnapshot.get("name")).toString());
+                    } else {
+                        textView.setText("unknown user");
+                    }
+                });
     }
 
 }
