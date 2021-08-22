@@ -14,6 +14,8 @@ import com.example.firebase210724.domain.Board;
 import com.example.firebase210724.util.FirebaseDatabaseHandler;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+
 public class BoardActivity extends AppCompatActivity implements BoardAdapter.ViewHolder.OnBoardListener {
     Button btnBoardUpload;
     RecyclerView recyclerBoard;
@@ -23,6 +25,7 @@ public class BoardActivity extends AppCompatActivity implements BoardAdapter.Vie
     TextView txtViewBoardTitle;
     TextView txtViewBoardUser;
     TextView txtViewBoardContent;
+    TextView txtViewBoardDate;
 
     private boolean isViewMode = false;
 
@@ -42,6 +45,7 @@ public class BoardActivity extends AppCompatActivity implements BoardAdapter.Vie
         txtViewBoardTitle = findViewById(R.id.txt_view_board_title);
         txtViewBoardUser = findViewById(R.id.txt_view_board_user);
         txtViewBoardContent = findViewById(R.id.txt_view_board_content);
+        txtViewBoardDate = findViewById(R.id.txt_view_board_date);
 
         handler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
 
@@ -76,11 +80,13 @@ public class BoardActivity extends AppCompatActivity implements BoardAdapter.Vie
         txtViewBoardTitle = findViewById(R.id.txt_view_board_title);
         txtViewBoardUser = findViewById(R.id.txt_view_board_user);
         txtViewBoardContent = findViewById(R.id.txt_view_board_content);
+        txtViewBoardDate = findViewById(R.id.txt_view_board_date);
 
         Board board = boardAdapter.getBoardList().get(position);
 
         handler.getUserNameById(board.getUserId(), txtViewBoardUser);
         txtViewBoardTitle.setText(board.getTitle());
         txtViewBoardContent.setText(board.getContent());
+        txtViewBoardDate.setText(new SimpleDateFormat("yyyy.MM.dd").format(board.getDate().toDate()));
     }
 }
