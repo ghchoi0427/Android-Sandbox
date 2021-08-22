@@ -10,10 +10,20 @@
         android:orientation="vertical"
         android:paddingHorizontal="10dp">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="giggle 게시판"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_board"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -27,11 +37,11 @@
 
         <Button
             android:id="@+id/btn_board_upload"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/theme_oval"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:textSize="40dp"
-            android:text="+" />
+            android:background="@drawable/theme_oval"
+            android:text="+"
+            android:textSize="30dp" />
     </LinearLayout>
 </RelativeLayout>
