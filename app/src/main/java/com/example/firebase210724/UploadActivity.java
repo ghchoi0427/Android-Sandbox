@@ -32,6 +32,7 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(view -> {
             postBoard(editTitle.getText().toString(), editContent.getText().toString(), FirebaseAuth.getInstance().getUid());
             startActivity(new Intent(this, BoardActivity.class));
+            finish();
         });
 
     }
