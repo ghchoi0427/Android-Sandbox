@@ -10,8 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.firebase210724.R;
 import com.example.firebase210724.domain.Board;
+import com.example.firebase210724.util.FirebaseDatabaseHandler;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
@@ -67,20 +71,28 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView title;
+        private final TextView user;
+        private final TextView date;
         OnBoardListener onBoardListener;
 
         public ViewHolder(View boardView, OnBoardListener onBoardListener) {
             super(boardView);
             title = boardView.findViewById(R.id.txt_board_title);
+            user = boardView.findViewById(R.id.txt_board_user);
+            date = boardView.findViewById(R.id.txt_board_date);
+
             this.onBoardListener = onBoardListener;
 
             boardView.setOnClickListener(this);
-
         }
 
         public void setItem(Board board) {
             try {
                 title.setText(board.getTitle());
+                FirebaseDatabaseHandler handler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
+                handler.getUserNameById(board.getUserId(), user);
+                Date date = board.getDate().toDate();
+                this.date.setText(new SimpleDateFormat("yyyy.MM.dd").format(date));
             } catch (Exception e) {
                 e.printStackTrace();
             }
