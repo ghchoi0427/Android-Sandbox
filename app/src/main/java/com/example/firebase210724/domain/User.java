@@ -1,11 +1,18 @@
 package com.example.firebase210724.domain;
 
 public class User {
-    String username;
-    String userId;
 
-    public User(String username, String userId) {
-        this.username = username;
-        this.userId = userId;
+    String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 }
