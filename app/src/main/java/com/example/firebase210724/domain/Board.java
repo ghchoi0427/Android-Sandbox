@@ -4,10 +4,27 @@ package com.example.firebase210724.domain;
 import com.google.firebase.Timestamp;
 
 public class Board {
-    String userId;
-    String title;
+
     String content;
+    String title;
+    String userId;
     Timestamp date;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
 
     public String getUserId() {
         return userId;
@@ -25,10 +42,7 @@ public class Board {
         return date;
     }
 
-    public Board(String userId, String title, String content, Timestamp date) {
-        this.userId = userId;
-        this.title = title;
-        this.content = content;
-        this.date = date;
+    public Board() {
+
     }
 }
