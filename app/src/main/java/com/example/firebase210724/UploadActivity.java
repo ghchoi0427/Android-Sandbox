@@ -11,6 +11,8 @@ import com.example.firebase210724.util.FirebaseDatabaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import static com.example.firebase210724.util.BoardFactory.createBoard;
+
 public class UploadActivity extends AppCompatActivity {
 
     EditText editTitle;
@@ -38,7 +40,7 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     public void postBoard(String title, String content, String userId) {
-        handler.post(getApplicationContext(), title, content, userId);
+        handler.postBoard(getApplicationContext(), createBoard(title, userId, content));
     }
 
 }
