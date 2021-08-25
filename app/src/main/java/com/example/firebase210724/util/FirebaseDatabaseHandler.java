@@ -61,21 +61,6 @@ public class FirebaseDatabaseHandler {
         }).addOnFailureListener(e -> Toast.makeText(context, "게시판 조회 실패 : " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    public void getUserNameById(String id, TextView textView) {
-
-        db.collection(COLLECTION_USER).document(id).get()
-                .addOnFailureListener(e -> {
-                    Toast.makeText(textView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                })
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        textView.setText(Objects.requireNonNull(documentSnapshot.get("name")).toString());
-                    } else {
-                        textView.setText("unknown user");
-                    }
-                });
-    }
-
     public void setSchedule() {
         //db.collection()
     }
