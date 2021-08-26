@@ -48,10 +48,14 @@ public class FirebaseDatabaseHandler {
         db.collection(COLLECTION_BOARD).orderBy("date", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                 Board board = new Board();
-                board.setUserId(Objects.requireNonNull(document.getData().get("userId")).toString());
-                board.setTitle(Objects.requireNonNull(document.getData().get("title")).toString());
-                board.setContent(Objects.requireNonNull(document.getData().get("content")).toString());
-                board.setDate((Timestamp) document.getData().get("date"));
+                try {
+                    board.setUserName(Objects.requireNonNull(document.getData().get("userName")).toString());
+                    board.setTitle(Objects.requireNonNull(document.getData().get("title")).toString());
+                    board.setContent(Objects.requireNonNull(document.getData().get("content")).toString());
+                    board.setDate((Timestamp) document.getData().get("date"));
+                } catch (NullPointerException e) {
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
 
                 boardList.add(board);
             }

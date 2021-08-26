@@ -89,10 +89,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
         public void setItem(Board board) {
             try {
                 title.setText(board.getTitle());
-                FirebaseDatabaseHandler handler = new FirebaseDatabaseHandler(FirebaseFirestore.getInstance());
-                handler.getUserNameById(board.getUserId(), user);
-                Date date = board.getDate().toDate();
-                this.date.setText(new SimpleDateFormat("yyyy.MM.dd").format(date));
+                user.setText(board.getUserName());
+                date.setText(new SimpleDateFormat("yyyy.MM.dd").format(board.getDate().toDate()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

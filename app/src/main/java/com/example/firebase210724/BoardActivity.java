@@ -84,7 +84,7 @@ public class BoardActivity extends AppCompatActivity implements BoardAdapter.Vie
 
         Board board = boardAdapter.getBoardList().get(position);
 
-        handler.getUserNameById(board.getUserId(), txtViewBoardUser);
+        txtViewBoardUser.setText(board.getUserName());
         txtViewBoardTitle.setText(board.getTitle());
         txtViewBoardContent.setText(board.getContent());
         txtViewBoardDate.setText(new SimpleDateFormat("yyyy.MM.dd").format(board.getDate().toDate()));

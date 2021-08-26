@@ -7,7 +7,7 @@ public class Board {
 
     String content;
     String title;
-    String userId;
+    String userName;
     Timestamp date;
 
     public void setContent(String content) {
@@ -18,16 +18,16 @@ public class Board {
         this.title = title;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public void setDate(Timestamp date) {
         this.date = date;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
     public String getTitle() {
