@@ -1,7 +1,11 @@
 package com.example.firebase210724;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignup;
     private FirebaseAuth auth;
     private final String EMAIL_SUFFIX = "@gmail.com";
+    public static final String LAST_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,28 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup = findViewById(R.id.btn_signup);
 
         auth = FirebaseAuth.getInstance();
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        btnLogin.setOnClickListener(view -> {
-            signIn(editId.getText().toString().trim(), editPassword.getText().toString().trim());
+        editId.setText(pref.getString(LAST_ID, ""));
+
+        editId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                pref.edit().putString(LAST_ID, editable.toString()).apply();
+            }
         });
+
+        btnLogin.setOnClickListener(view -> signIn(editId.getText().toString().trim(), editPassword.getText().toString().trim()));
 
         btnSignup.setOnClickListener(view -> startActivity(new Intent(this, RegisterActivity.class)));
     }
