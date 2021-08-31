@@ -1,20 +1,18 @@
 package com.example.firebase210724.domain;
 
-import com.google.firebase.Timestamp;
-
 import java.util.List;
 
 public class Schedule {
 
-    Timestamp date;
+    String date;
     List<String> userIds;
     List<String> todo;
 
-    public Timestamp getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -32,5 +30,9 @@ public class Schedule {
 
     public void setTodo(List<String> todo) {
         this.todo = todo;
+    }
+
+    public void addUser(String userId) {
+        userIds.add(userId);
     }
 }
