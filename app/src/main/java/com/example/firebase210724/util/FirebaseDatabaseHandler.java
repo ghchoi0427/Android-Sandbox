@@ -6,13 +6,16 @@ import android.widget.Toast;
 
 import com.example.firebase210724.adapter.BoardAdapter;
 import com.example.firebase210724.domain.Board;
+import com.example.firebase210724.domain.Schedule;
 import com.example.firebase210724.domain.User;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +37,10 @@ public class FirebaseDatabaseHandler {
         db.collection(COLLECTION_USER).document(user.getName()).set(user)
                 .addOnSuccessListener(unused -> Toast.makeText(context, "user added", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    public String getUserId() {
+        return Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail()).split("@")[0];
     }
 
     public void postBoard(Context context, Board board) {
@@ -65,8 +72,15 @@ public class FirebaseDatabaseHandler {
         }).addOnFailureListener(e -> Toast.makeText(context, "게시판 조회 실패 : " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    public void setSchedule() {
-        //db.collection()
+    public void getSchedule(TextView textView, int year, int month, int dayOfMonth, String user) {
+        db.collection(COLLECTION_SCHEDULE).whereEqualTo("date", new Timestamp(new Date(year, month, dayOfMonth))).whereArrayContains("userIds", user).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        }).addOnCompleteListener(task -> Toast.makeText(textView.getContext(), "load complete", Toast.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Toast.makeText(textView.getContext(), "fail", Toast.LENGTH_LONG).show());
+    }
+
+    public void postSchedule(Context context, Schedule schedule) {
+        db.collection(COLLECTION_SCHEDULE).document(schedule.getDate() + "_" + getUserId()).set(schedule).addOnSuccessListener(unused -> Toast.makeText(context, "성공적으로 게시되었습니다.", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
 }
