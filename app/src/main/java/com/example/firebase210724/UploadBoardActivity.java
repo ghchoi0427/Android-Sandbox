@@ -15,7 +15,7 @@ import java.util.Objects;
 
 import static com.example.firebase210724.util.BoardFactory.createBoard;
 
-public class UploadActivity extends AppCompatActivity {
+public class UploadBoardActivity extends AppCompatActivity {
 
     EditText editTitle;
     EditText editContent;
