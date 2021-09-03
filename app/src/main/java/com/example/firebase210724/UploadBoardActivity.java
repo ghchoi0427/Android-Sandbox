@@ -25,7 +25,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload);
+        setContentView(R.layout.activity_upload_board);
 
         editTitle = findViewById(R.id.edit_upload_title);
         editContent = findViewById(R.id.edit_upload_content);
