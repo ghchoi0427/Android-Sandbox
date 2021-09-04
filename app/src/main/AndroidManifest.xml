@@ -22,6 +22,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".BoardActivity" />
         <activity android:name=".UploadBoardActivity" />
+        <activity android:name=".UploadScheduleActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ScheduleActivity" />
         <activity android:name=".WebActivity" />
