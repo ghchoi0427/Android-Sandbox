@@ -1,14 +1,14 @@
 package com.example.firebase210724;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebase210724.util.FirebaseDatabaseHandler;
-import com.example.firebase210724.util.ScheduleFactory;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.Date;
 public class ScheduleActivity extends AppCompatActivity {
     CalendarView calendarView;
     FirebaseDatabaseHandler handler;
-    EditText txtTodo;
+    TextView txtTodo;
     Button btnScheduleUpload;
 
     @Override
@@ -35,18 +35,16 @@ public class ScheduleActivity extends AppCompatActivity {
 
         btnScheduleUpload.setOnClickListener(view -> {
             String date = new Date(calendarView.getDate()).toString();
-            String todo = txtTodo.getText().toString();
-            handler.postSchedule(getApplicationContext(), ScheduleFactory.createSchedule(date, todo, handler.getUserId()));
+            startActivity(new Intent(this, UploadScheduleActivity.class).putExtra("date", date));
         });
-
     }
 
     CalendarView.OnDateChangeListener onDateChangeListener = (calendarView, year, month, dayOfMonth) -> {
         handler.getSchedule(txtTodo, year, month, dayOfMonth, handler.getUserId());
-
     };
 
     private void updateCalendar() {
 
     }
+
 }
