@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:text="웹" />
 
+        <Button
+            android:id="@+id/btn_socket_client"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="소켓 클라이언트" />
+
 
     </LinearLayout>
 </LinearLayout>

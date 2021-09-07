@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnBoard;
     Button btnSchedule;
     Button btnWeb;
+    Button btnSocketClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +22,11 @@ public class MainActivity extends AppCompatActivity {
         btnBoard = findViewById(R.id.btn_board);
         btnSchedule = findViewById(R.id.btn_schedule);
         btnWeb = findViewById(R.id.btn_web);
+        btnSocketClient = findViewById(R.id.btn_socket_client);
 
         btnBoard.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), BoardActivity.class)));
         btnSchedule.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ScheduleActivity.class)));
         btnWeb.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), WebActivity.class)));
+        btnSocketClient.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SocketClientActivity.class)));
     }
 }
