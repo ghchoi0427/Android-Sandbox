@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.firebase210724.util.SocketClient;
 
-import java.net.Socket;
-
 public class SocketClientActivity extends AppCompatActivity {
 
     Button btnSocketSend;
@@ -19,6 +17,8 @@ public class SocketClientActivity extends AppCompatActivity {
     EditText editClientMessage;
     TextView textClientDialog;
 
+    SocketClient client;
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_socket_client);
@@ -28,13 +28,17 @@ public class SocketClientActivity extends AppCompatActivity {
         editClientMessage = findViewById(R.id.edit_client_message);
         textClientDialog = findViewById(R.id.txt_client_dialog);
 
-        SocketClient client = new SocketClient();
-        client.startConnection("192.168.0.47",9999);
-        Socket clientSocket = client.socket;
+        client = new SocketClient();
+        new Thread(() -> client.startConnection("192.168.0.47", 9999, textClientDialog)).start();
 
         btnSocketSend.setOnClickListener(view -> {
-            //new Thread(() -> client.getImage("192.168.0.47", 9999, imgSocketClient)).start();
-            new Thread(() -> client.getImage("192.168.0.47", 9999, imgSocketClient)).start();
+            new Thread(() -> client.sendMessage(client.socket, editClientMessage.getText().toString().trim())).start();
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        client.closeSocket();
     }
 }
