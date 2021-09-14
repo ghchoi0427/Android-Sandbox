@@ -2,42 +2,41 @@ package com.example.firebase210724.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SocketClient {
-    Socket socket;
+    public Socket socket;
+    final int BUFFER_SIZE = 1024;
 
     public SocketClient() {
         socket = new Socket();
     }
 
-    public void startConnection(String address, int port) {
+    public void startConnection(String address, int port, TextView textView) {
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(address, port));
 
-            byte[] bytes;
+            ExecutorService reader = Executors.newCachedThreadPool();
 
-            OutputStream output = socket.getOutputStream();
-            String message = "test";
-            bytes = message.getBytes("UTF-8");
-            output.write(bytes);
-            output.flush();
+            reader.execute(() -> {
+                try {
+                    readMessage(socket, textView);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
 
-            InputStream input = socket.getInputStream();
-            bytes = new byte[1024];
-            int readByteCount = input.read(bytes);
-            message = new String(bytes, 0, readByteCount, "UTF-8");
-
-            output.close();
-            input.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,5 +86,31 @@ public class SocketClient {
         }
     }
 
+    public void sendMessage(Socket socket, String message) {
+        OutputStream outputStream;
+        try {
+            outputStream = socket.getOutputStream();
+            outputStream.write(message.getBytes(StandardCharsets.UTF_8));
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readMessage(Socket socket, TextView textView) throws IOException {
+        byte[] bytes = new byte[BUFFER_SIZE];
+        while (socket.getInputStream().read(bytes, 0, bytes.length) != -1) {
+            textView.append(new String(bytes));
+            bytes = new byte[BUFFER_SIZE];
+        }
+    }
+
+    public void closeSocket() {
+        try {
+            this.socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
