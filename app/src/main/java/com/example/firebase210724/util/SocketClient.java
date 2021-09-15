@@ -67,7 +67,6 @@ public class SocketClient {
             bytes = new byte[57641];
             input.read(bytes, 0, bytes.length);
 
-            Log.d("tester", new String(bytes, StandardCharsets.UTF_8));
             Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             imageView.setImageBitmap(bmp);
 
