@@ -74,7 +74,13 @@ public class FirebaseDatabaseHandler {
 
     public void getSchedule(TextView textView, int year, int month, int dayOfMonth, String user) {
         db.collection(COLLECTION_SCHEDULE).whereEqualTo("date", new Timestamp(new Date(year, month, dayOfMonth))).whereArrayContains("userIds", user).get().addOnSuccessListener(queryDocumentSnapshots -> {
-        }).addOnCompleteListener(task -> Toast.makeText(textView.getContext(), "load complete", Toast.LENGTH_LONG).show())
+        }).addOnCompleteListener(task -> {
+            for (DocumentSnapshot document : task.getResult()) {
+                textView.append(document.toString());
+                textView.append("\n");
+            }
+            Toast.makeText(textView.getContext(), "load complete", Toast.LENGTH_LONG).show();
+        })
                 .addOnFailureListener(e -> Toast.makeText(textView.getContext(), "fail", Toast.LENGTH_LONG).show());
     }
 
