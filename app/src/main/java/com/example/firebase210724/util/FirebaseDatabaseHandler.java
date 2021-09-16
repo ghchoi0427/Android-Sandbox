@@ -10,6 +10,7 @@ import com.example.firebase210724.domain.Schedule;
 import com.example.firebase210724.domain.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -87,6 +88,18 @@ public class FirebaseDatabaseHandler {
     public void postSchedule(Context context, Schedule schedule) {
         db.collection(COLLECTION_SCHEDULE).document(schedule.getDate() + "_" + getUserId()).set(schedule).addOnSuccessListener(unused -> Toast.makeText(context, "성공적으로 게시되었습니다.", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show());
+    }
+
+    public void sendNotification(Context context) {
+        CollectionReference ref = db.collection("boards");
+        ref.addSnapshotListener((value, error) -> {
+            if (error != null) {
+                return;
+            }
+            NotificationHandler notification = new NotificationHandler();
+            notification.sendNotification(context, "ChannelBoard"+value, "new post has been uploaded", value.toString());
+        });
+
     }
 
 }
