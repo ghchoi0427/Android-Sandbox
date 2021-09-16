@@ -54,7 +54,7 @@ public class BoardActivity extends AppCompatActivity implements BoardAdapter.Vie
         loadBoard();
 
         btnBoardUpload.setOnClickListener(view -> startActivity(new Intent(BoardActivity.this, UploadBoardActivity.class)));
-
+        handler.sendNotification(getApplicationContext());
     }
 
     @Override
