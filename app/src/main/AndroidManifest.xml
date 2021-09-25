@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Firebase210724"
         android:usesCleartextTraffic="true">
+        <activity android:name=".PopActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
